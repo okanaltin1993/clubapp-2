@@ -17,7 +17,7 @@ def admin_login():
         if request.form["password"] == "admin123":
             session["admin"] = True
             return redirect("/admin-panel")
-    return "<h1>Admin Login Seite</h1><form method='post'><input name='admin_id' placeholder='Admin-ID'><br><input name='password' type='password'><br><button type='submit'>Login</button></form>"
+    return render_template("admin_login_styled.html")
 
 @app.route("/admin-panel")
 def admin_panel():
@@ -34,6 +34,7 @@ def add_member_form():
 @app.route("/add-member", methods=["POST"])
 def add_member():
     return "Mitglied erfolgreich gespeichert."
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)

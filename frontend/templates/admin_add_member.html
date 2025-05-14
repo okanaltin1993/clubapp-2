@@ -59,21 +59,6 @@
 </head>
 <body>
 <div class="container">
-    <div style="text-align:right; margin-bottom: 10px;">
-        <a href="/logout">Logout</a>
-    </div>
-    <script>
-        let timer;
-        function resetTimer() {
-            clearTimeout(timer);
-            timer = setTimeout(() => {{
-                window.location.href = "/logout";
-            }}, 10 * 60 * 1000);
-        }
-        window.onload = resetTimer;
-        document.onmousemove = resetTimer;
-        document.onkeypress = resetTimer;
-    </script>
     <h1>Mitglied hinzufügen</h1>
     <form method="POST" action="/add-member" enctype="multipart/form-data">
         <label>Mitgliedsnummer:</label>
