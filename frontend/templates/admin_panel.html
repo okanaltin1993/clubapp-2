@@ -3,83 +3,125 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 40px;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
         }
-        .panel {
-            max-width: 400px;
-            margin: 100px auto;
-            padding: 30px;
-            background: white;
+        .admin-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: white;
             border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
             text-align: center;
         }
-        .panel h1 {
-            margin-bottom: 30px;
+        h1 {
+            font-size: 28px;
         }
-        .panel a.button {
-            display: inline-block;
+        .button {
+            padding: 10px 20px;
+            margin: 10px 0;
             background-color: #4CAF50;
             color: white;
-            padding: 12px 25px;
-            border-radius: 6px;
-            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
             font-size: 16px;
         }
-        .panel a.button:hover {
-            background-color: #45a049;
+        .logout {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            padding: 8px 16px;
+            background-color: #f44336;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .search-bar {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #eee;
         }
     </style>
 </head>
 <body>
+    <button class="logout" onclick="location.href='/logout'">Logout</button>
+    <div class="admin-container">
+        <h1>Admin Panel</h1>
+        <button class="button" onclick="location.href='/add-member'">Mitglied hinzufügen</button>
 
-<div class="logout-container">
-    <a href="/logout" class="logout-btn">Logout</a>
-</div>
-<style>
-    .logout-container {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-    }
-    .logout-btn {
-        background-color: #d9534f;
-        color: white;
-        padding: 8px 16px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: bold;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        transition: background-color 0.3s;
-    }
-    .logout-btn:hover {
-        background-color: #c9302c;
-    }
-</style>
+        <div class="search-bar">
+            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Suche nach Name, Nummer, Ort...">
+        </div>
 
-<script>
-    let timer;
-    function resetTimer() {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            window.location.href = "/logout";
-        }, 10 * 60 * 1000);
-    }
-    window.onload = resetTimer;
-    document.onmousemove = resetTimer;
-    document.onkeypress = resetTimer;
-</script>
+        <table id="memberTable">
+            <thead>
+                <tr>
+                    <th>Mitgliedsnummer</th>
+                    <th>Vorname</th>
+                    <th>Nachname</th>
+                    <th>Adresse</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CB-BHV-01</td>
+                    <td>Ali</td>
+                    <td>Yilmaz</td>
+                    <td>Bremerhaven, 27570, Hafenstraße 22</td>
+                </tr>
+                <tr>
+                    <td>CB-BHV-02</td>
+                    <td>Lisa</td>
+                    <td>Müller</td>
+                    <td>Bremerhaven, 27568, Goethestraße 10</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function searchTable() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let table = document.getElementById("memberTable");
+            let trs = table.getElementsByTagName("tr");
 
-<div class="panel">
-    <h1>Admin Panel</h1>
-    <a href="/admin-add-member" class="button">Mitglied hinzufügen</a>
-</div>
+            for (let i = 1; i < trs.length; i++) {
+                let tds = trs[i].getElementsByTagName("td");
+                let match = false;
+                for (let j = 0; j < tds.length; j++) {
+                    if (tds[j].innerText.toLowerCase().includes(input)) {
+                        match = true;
+                        break;
+                    }
+                }
+                trs[i].style.display = match ? "" : "none";
+            }
+        }
+    </script>
 </body>
 </html>
