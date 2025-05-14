@@ -1,4 +1,51 @@
 
+
+Ich mach dir das so:
+
+Felder und Button gleich breit (z. B. 80% oder 100%)
+
+Zentriert im Container
+
+Gleicher Padding/Border-Radius, damit alles stimmig aussieht
+
+🔧 Wenn du mir kurz den HTML-Code von deiner admin_login_styled.html schickst,
+pass ich es dir direkt an und geb’s dir perfekt zurück.
+
+Oder: Ich geb dir gleich einen fertigen Vorschlag zum Einfügen – wie du willst bro 😎
+
+
+
+
+
+
+
+Du:
+mach 100 % zentriern ich schick dir jetz den code
+
+
+ChatGPT:
+Perfekt bro 🙌 – schick mir einfach deinen admin_login_styled.html Code,
+und ich mach dir die ID- und Passwortfelder:
+
+100 % breit
+
+sauber zentriert
+
+gleiches Styling wie der Login-Button
+
+Ich bau’s dir dann direkt schön um, ready zum Einfügen 💪
+
+
+2/2
+
+
+
+
+
+
+
+Du:
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -39,6 +86,86 @@
             border: none;
             border-radius: 6px;
             font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>Admin Login</h2>
+    <form method="POST">
+        <input type="text" name="admin_id" placeholder="Admin-ID" required>
+        <input type="password" name="password" placeholder="Passwort" required>
+        <button type="submit">Login</button>
+    </form>
+</div>
+</body>
+</html>
+
+
+ChatGPT:
+Top bro, danke! Dein Login-Formular ist eigentlich schon nice – ich hab es jetzt nur optimiert, damit:
+
+alle Felder exakt gleich breit wie der Button sind
+
+alles zentriert & optisch harmonisch aussieht
+
+mobile Ansicht auch stabil bleibt
+
+✅ Dein überarbeiteter Code (admin_login_styled.html):
+html
+Kopieren
+Bearbeiten
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 350px;
+            box-sizing: border-box;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input, button {
+            width: 100%;
+            max-width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
             cursor: pointer;
         }
         button:hover {
