@@ -12,7 +12,7 @@
             padding: 0;
         }
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 60px auto;
             background: white;
             padding: 20px;
@@ -78,6 +78,7 @@
                     <th>Mitgliedsnummer</th>
                     <th>Vorname</th>
                     <th>Nachname</th>
+                    <th>Mitgliedstyp</th>
                     <th>PLZ</th>
                     <th>Ort</th>
                     <th>Löschen</th>
@@ -89,8 +90,19 @@
                     <td>{{ mitglied[0] }}</td>
                     <td>{{ mitglied[1] }}</td>
                     <td>{{ mitglied[2] }}</td>
-                    <td>{{ mitglied[3] }}</td>
+                    <td style="text-align: center;">
+                        {% if mitglied[3] == 'Bronze' %}
+                            🥉 Bronze
+                        {% elif mitglied[3] == 'Silber' %}
+                            🥈 Silber
+                        {% elif mitglied[3] == 'Gold' %}
+                            🥇 Gold
+                        {% else %}
+                            {{ mitglied[3] }}
+                        {% endif %}
+                    </td>
                     <td>{{ mitglied[4] }}</td>
+                    <td>{{ mitglied[5] }}</td>
                     <td style="text-align: center;">
                         <form method="POST" action="/delete-member" onsubmit="return confirm('Wirklich löschen?');">
                             <input type="hidden" name="mitgliedsnummer" value="{{ mitglied[0] }}">
