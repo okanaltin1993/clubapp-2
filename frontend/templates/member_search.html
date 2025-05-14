@@ -54,14 +54,16 @@
             background-color: #ddd;
         }
         .delete-icon {
-            background: none;
+            background-color: black;
+            color: white;
             border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
             cursor: pointer;
-            padding: 0;
         }
-        .delete-icon svg {
-            fill: red;
-            height: 20px;
+        .delete-icon:hover {
+            background-color: #333;
         }
     </style>
 </head>
@@ -92,12 +94,7 @@
                     <td style="text-align: center;">
                         <form method="POST" action="/delete-member" onsubmit="return confirm('Wirklich löschen?');">
                             <input type="hidden" name="mitgliedsnummer" value="{{ mitglied[0] }}">
-                            <button type="submit" class="delete-icon" title="Löschen">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" fill="red">
-                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm3.46-9.12L10.88 12l-1.42 2.12 1.42 1.42L12 13.88l2.12 1.42 1.42-1.42L13.12 12l1.42-2.12-1.42-1.42L12 10.12l-2.12-1.42-1.42 1.42z"/>
-                                    <path d="M0 0h24v24H0z" fill="none"/>
-                                </svg>
-                            </button>
+                            <button type="submit" class="delete-icon">Löschen</button>
                         </form>
                     </td>
                 </tr>
