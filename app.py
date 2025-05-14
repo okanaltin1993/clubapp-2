@@ -84,6 +84,21 @@ def member_search():
 
     return render_template("member_search.html", mitglieder=mitglieder)
 
+@app.route("/delete-member", methods=["POST"])
+def delete_member():
+    if not session.get("admin"):
+        return redirect("/admin-login")
+
+    mitgliedsnummer = request.form["mitgliedsnummer"]
+
+    conn = sqlite3.connect("club.db")
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM mitglieder WHERE mitgliedsnummer = ?", (mitgliedsnummer,))
+    conn.commit()
+    conn.close()
+
+    return redirect("/member-search")
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
