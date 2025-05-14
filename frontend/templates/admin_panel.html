@@ -3,125 +3,54 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f1f1f1;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
-        .admin-container {
-            max-width: 800px;
-            margin: 40px auto;
+        .container {
+            max-width: 600px;
+            margin: 80px auto;
             padding: 20px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
             text-align: center;
         }
-        h1 {
-            font-size: 28px;
-        }
         .button {
-            padding: 10px 20px;
-            margin: 10px 0;
+            display: block;
+            width: 80%;
+            padding: 12px;
+            margin: 20px auto;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
+            border-radius: 12px;
             font-size: 16px;
+            cursor: pointer;
         }
         .logout {
             position: absolute;
-            right: 20px;
             top: 20px;
-            padding: 8px 16px;
+            right: 20px;
             background-color: #f44336;
+            padding: 10px 16px;
             border: none;
+            border-radius: 8px;
             color: white;
-            border-radius: 8px;
             cursor: pointer;
-        }
-        .search-bar {
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-        input[type="text"] {
-            padding: 10px;
-            width: 80%;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-        th {
-            background-color: #eee;
         }
     </style>
 </head>
 <body>
     <button class="logout" onclick="location.href='/logout'">Logout</button>
-    <div class="admin-container">
+    <div class="container">
         <h1>Admin Panel</h1>
         <button class="button" onclick="location.href='/add-member'">Mitglied hinzufügen</button>
-
-        <div class="search-bar">
-            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Suche nach Name, Nummer, Ort...">
-        </div>
-
-        <table id="memberTable">
-            <thead>
-                <tr>
-                    <th>Mitgliedsnummer</th>
-                    <th>Vorname</th>
-                    <th>Nachname</th>
-                    <th>Adresse</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>CB-BHV-01</td>
-                    <td>Ali</td>
-                    <td>Yilmaz</td>
-                    <td>Bremerhaven, 27570, Hafenstraße 22</td>
-                </tr>
-                <tr>
-                    <td>CB-BHV-02</td>
-                    <td>Lisa</td>
-                    <td>Müller</td>
-                    <td>Bremerhaven, 27568, Goethestraße 10</td>
-                </tr>
-            </tbody>
-        </table>
+        <button class="button" onclick="location.href='/member-search'">Mitglieder suchen</button>
     </div>
-    <script>
-        function searchTable() {
-            let input = document.getElementById("searchInput").value.toLowerCase();
-            let table = document.getElementById("memberTable");
-            let trs = table.getElementsByTagName("tr");
-
-            for (let i = 1; i < trs.length; i++) {
-                let tds = trs[i].getElementsByTagName("td");
-                let match = false;
-                for (let j = 0; j < tds.length; j++) {
-                    if (tds[j].innerText.toLowerCase().includes(input)) {
-                        match = true;
-                        break;
-                    }
-                }
-                trs[i].style.display = match ? "" : "none";
-            }
-        }
-    </script>
 </body>
 </html>
