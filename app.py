@@ -1,9 +1,12 @@
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 import sqlite3
 import os
 
 app = Flask(__name__)
+app.secret_key = "super_secret_key"
+
+ADMIN_PASSWORD = "admin123"
 
 def init_db():
     conn = sqlite3.connect("database.db")
@@ -30,13 +33,38 @@ def generate_next_member_id():
     conn.close()
     return f"CB-BHV-{count + 1:02d}"
 
+@app.route("/")
+def home():
+    return redirect("/admin-login")
+
+@app.route("/admin-login", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        if request.form["password"] == ADMIN_PASSWORD:
+            session["admin"] = True
+            return redirect("/admin-panel")
+        else:
+            return "Falsches Passwort", 401
+    return render_template("admin_login.html")
+
+@app.route("/admin-panel")
+def admin_panel():
+    if not session.get("admin"):
+        return redirect("/admin-login")
+    return render_template("admin_panel.html")
+
 @app.route("/admin-add-member")
 def add_member_form():
+    if not session.get("admin"):
+        return redirect("/admin-login")
     mitgliedsnummer = generate_next_member_id()
     return render_template("admin_add_member.html", mitgliedsnummer=mitgliedsnummer)
 
 @app.route("/add-member", methods=["POST"])
 def add_member():
+    if not session.get("admin"):
+        return redirect("/admin-login")
+
     mitgliedsnummer = request.form["mitgliedsnummer"]
     vorname = request.form["vorname"]
     nachname = request.form["nachname"]
