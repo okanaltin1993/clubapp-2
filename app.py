@@ -29,7 +29,15 @@ def admin_panel():
 def add_member_form():
     if not session.get("admin"):
         return redirect("/admin-login")
-    return render_template("admin_add_member.html", mitgliedsnummer="CB-BHV-01")
+
+    conn = sqlite3.connect("club.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM mitglieder")
+    count = cursor.fetchone()[0] + 1
+    conn.close()
+
+    mitgliedsnummer = f"CB-BHV-{count:02d}"
+    return render_template("admin_add_member.html", mitgliedsnummer=mitgliedsnummer)
 
 @app.route("/add-member", methods=["POST"])
 def add_member():
