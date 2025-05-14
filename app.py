@@ -40,11 +40,15 @@ def home():
 @app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
+        admin_id = request.form["admin_id"]  # 🆕 Admin-ID aus Formular
+        print("Admin-ID eingegeben:", admin_id)  # nur zur Anzeige im Log
+
         if request.form["password"] == ADMIN_PASSWORD:
             session["admin"] = True
             return redirect("/admin-panel")
         else:
             return "Falsches Passwort", 401
+
     return render_template("admin_login_styled.html")
 
 @app.route("/admin-panel")
