@@ -1,17 +1,94 @@
 
 <!DOCTYPE html>
-<html>
-<head><title>Mitglied hinzufügen</title></head>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Mitglied hinzufügen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="file"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
 <body>
+<div class="container">
     <h1>Mitglied hinzufügen</h1>
-    <form action="/add-member" method="post">
-        <label>Mitgliedsnummer: <input type="text" name="mitgliedsnummer" value="{{ mitgliedsnummer }}" readonly></label><br>
-        <label>Vorname: <input type="text" name="vorname" required></label><br>
-        <label>Nachname: <input type="text" name="nachname" required></label><br>
-        <label>Straße: <input type="text" name="strasse" required></label><br>
-        <label>Postleitzahl: <input type="text" name="plz" required></label><br>
-        <label>Ort: <input type="text" name="ort" required></label><br>
+    <form method="POST" action="/add-member" enctype="multipart/form-data">
+        <label>Mitgliedsnummer:</label>
+        <input type="text" name="mitgliedsnummer" value="{{ mitgliedsnummer }}" readonly>
+
+        <label>Vorname:</label>
+        <input type="text" name="vorname" required>
+
+        <label>Nachname:</label>
+        <input type="text" name="nachname" required>
+
+        <label>Straße:</label>
+        <input type="text" name="strasse" required>
+
+        <label>Postleitzahl:</label>
+        <input type="text" name="plz" required>
+
+        <label>Ort:</label>
+        <input type="text" name="ort" required>
+
+        <label>Staatsbürgerschaft:</label>
+        <input type="text" name="staatsbuergerschaft" required>
+
+        <label>Mitgliedsstatus:</label>
+        <select name="mitgliedsstatus">
+            <option value="Bronze">Bronze</option>
+            <option value="Silber">Silber</option>
+            <option value="Gold">Gold</option>
+        </select>
+
+        <label>Foto hochladen:</label>
+        <input type="file" name="bild">
+
         <button type="submit">Speichern</button>
     </form>
+</div>
 </body>
 </html>
