@@ -34,3 +34,6 @@ def add_member_form():
 @app.route("/add-member", methods=["POST"])
 def add_member():
     return "Mitglied erfolgreich gespeichert."
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
