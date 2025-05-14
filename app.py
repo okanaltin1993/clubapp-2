@@ -45,7 +45,7 @@ def admin_login():
             return redirect("/admin-panel")
         else:
             return "Falsches Passwort", 401
-    return render_template("admin_login.html")
+    return render_template("admin_login_styled.html")
 
 @app.route("/admin-panel")
 def admin_panel():
