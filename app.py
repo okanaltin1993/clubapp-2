@@ -1,6 +1,7 @@
 
 from flask import Flask, render_template, request, redirect
 import sqlite3
+import os
 
 app = Flask(__name__)
 
@@ -31,16 +32,17 @@ def generate_next_member_id():
 
 @app.route("/admin-add-member")
 def add_member_form():
-    return render_template("admin_add_member.html")
+    mitgliedsnummer = generate_next_member_id()
+    return render_template("admin_add_member.html", mitgliedsnummer=mitgliedsnummer)
 
 @app.route("/add-member", methods=["POST"])
 def add_member():
+    mitgliedsnummer = request.form["mitgliedsnummer"]
     vorname = request.form["vorname"]
     nachname = request.form["nachname"]
     strasse = request.form["strasse"]
     plz = request.form["plz"]
     ort = request.form["ort"]
-    mitgliedsnummer = generate_next_member_id()
 
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
@@ -55,4 +57,5 @@ def add_member():
 
 if __name__ == "__main__":
     init_db()
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
