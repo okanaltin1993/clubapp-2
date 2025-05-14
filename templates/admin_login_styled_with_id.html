@@ -71,6 +71,7 @@
     <div class="login-box">
         <h1>Admin Login</h1>
         <form action="/admin-login" method="post">
+            <input type="text" name="admin_id" placeholder="Admin-ID eingeben" required>
             <input type="password" id="password" name="password" placeholder="Passwort eingeben" required>
             <div class="checkbox-container">
                 <label><input type="checkbox" onclick="togglePassword()"> Passwort anzeigen</label>
