@@ -53,14 +53,12 @@ def add_member():
     mitgliedsstatus = request.form["mitgliedsstatus"]
     bild = request.files["bild"].read() if "bild" in request.files and request.files["bild"] else None
 
-    # Neue Mitgliedsnummer generieren
     conn = sqlite3.connect("club.db")
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM mitglieder")
     count = cursor.fetchone()[0] + 1
     mitgliedsnummer = f"CB-BHV-{count:02d}"
 
-    # Mitglied speichern
     cursor.execute("""
         INSERT INTO mitglieder (
             mitgliedsnummer, vorname, nachname, strasse, plz, ort, staatsbuergerschaft, mitgliedsstatus, bild
@@ -77,7 +75,14 @@ def add_member():
 def member_search():
     if not session.get("admin"):
         return redirect("/admin-login")
-    return render_template("member_search.html")
+
+    conn = sqlite3.connect("club.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT mitgliedsnummer, vorname, nachname, plz, ort FROM mitglieder")
+    mitglieder = cursor.fetchall()
+    conn.close()
+
+    return render_template("member_search.html", mitglieder=mitglieder)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
