@@ -33,7 +33,8 @@ def add_member_form():
 
 @app.route("/add-member", methods=["POST"])
 def add_member():
-    return "Mitglied erfolgreich gespeichert."
+    # Datenverarbeitung ausgelassen für Demo
+    return redirect("/admin-panel")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
