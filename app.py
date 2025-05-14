@@ -41,7 +41,36 @@ def add_member_form():
 
 @app.route("/add-member", methods=["POST"])
 def add_member():
-    # Datenverarbeitung ausgelassen für Demo
+    if not session.get("admin"):
+        return redirect("/admin-login")
+
+    vorname = request.form["vorname"]
+    nachname = request.form["nachname"]
+    strasse = request.form["strasse"]
+    plz = request.form["plz"]
+    ort = request.form["ort"]
+    staatsbuergerschaft = request.form["staatsbuergerschaft"]
+    mitgliedsstatus = request.form["mitgliedsstatus"]
+    bild = request.files["bild"].read() if "bild" in request.files and request.files["bild"] else None
+
+    # Neue Mitgliedsnummer generieren
+    conn = sqlite3.connect("club.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM mitglieder")
+    count = cursor.fetchone()[0] + 1
+    mitgliedsnummer = f"CB-BHV-{count:02d}"
+
+    # Mitglied speichern
+    cursor.execute("""
+        INSERT INTO mitglieder (
+            mitgliedsnummer, vorname, nachname, strasse, plz, ort, staatsbuergerschaft, mitgliedsstatus, bild
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        mitgliedsnummer, vorname, nachname, strasse, plz, ort, staatsbuergerschaft, mitgliedsstatus, bild
+    ))
+    conn.commit()
+    conn.close()
+
     return redirect("/admin-panel")
 
 @app.route("/member-search")
