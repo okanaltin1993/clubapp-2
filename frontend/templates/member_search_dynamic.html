@@ -60,29 +60,26 @@
     <div class="container">
         <h1>Mitglieder suchen</h1>
         <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Suche nach Name, Mitgliedsnummer, Ort...">
-
         <table id="memberTable">
             <thead>
                 <tr>
                     <th>Mitgliedsnummer</th>
                     <th>Vorname</th>
                     <th>Nachname</th>
-                    <th>Adresse</th>
+                    <th>PLZ</th>
+                    <th>Ort</th>
                 </tr>
             </thead>
             <tbody>
+                {% for mitglied in mitglieder %}
                 <tr>
-                    <td>CB-BHV-01</td>
-                    <td>Ali</td>
-                    <td>Yilmaz</td>
-                    <td>Bremerhaven, 27570, Hafenstraße 22</td>
+                    <td>{{ mitglied[0] }}</td>
+                    <td>{{ mitglied[1] }}</td>
+                    <td>{{ mitglied[2] }}</td>
+                    <td>{{ mitglied[3] }}</td>
+                    <td>{{ mitglied[4] }}</td>
                 </tr>
-                <tr>
-                    <td>CB-BHV-02</td>
-                    <td>Lisa</td>
-                    <td>Müller</td>
-                    <td>Bremerhaven, 27568, Goethestraße 10</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -90,7 +87,6 @@
         function searchTable() {
             let input = document.getElementById("searchInput").value.toLowerCase();
             let rows = document.getElementById("memberTable").getElementsByTagName("tr");
-
             for (let i = 1; i < rows.length; i++) {
                 let cells = rows[i].getElementsByTagName("td");
                 let match = false;
