@@ -36,6 +36,12 @@ def add_member():
     # Datenverarbeitung ausgelassen für Demo
     return redirect("/admin-panel")
 
+@app.route("/member-search")
+def member_search():
+    if not session.get("admin"):
+        return redirect("/admin-login")
+    return render_template("member_search.html")
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
