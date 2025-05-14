@@ -2,7 +2,11 @@ from flask import Flask, render_template, request, redirect, session
 import sqlite3
 import os
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder="frontend/templates",
+    static_folder="frontend/static"
+)
 app.secret_key = "super_secret_key"
 
 ADMIN_PASSWORD = "admin123"
