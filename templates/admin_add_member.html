@@ -1,12 +1,17 @@
 
-        <h1>Mitglied hinzufügen</h1>
-        <form action="/add-member" method="post">
-            <input type="text" name="mitgliedsnummer" value="{{ mitgliedsnummer }}" readonly><br>
-            <input type="text" name="vorname" placeholder="Vorname"><br>
-            <input type="text" name="nachname" placeholder="Nachname"><br>
-            <input type="text" name="strasse" placeholder="Straße"><br>
-            <input type="text" name="plz" placeholder="PLZ"><br>
-            <input type="text" name="ort" placeholder="Ort"><br>
-            <button type="submit">Speichern</button>
-        </form>
-    
+<!DOCTYPE html>
+<html>
+<head><title>Mitglied hinzufügen</title></head>
+<body>
+    <h1>Mitglied hinzufügen</h1>
+    <form action="/add-member" method="post">
+        <label>Mitgliedsnummer: <input type="text" name="mitgliedsnummer" value="{{ mitgliedsnummer }}" readonly></label><br>
+        <label>Vorname: <input type="text" name="vorname" required></label><br>
+        <label>Nachname: <input type="text" name="nachname" required></label><br>
+        <label>Straße: <input type="text" name="strasse" required></label><br>
+        <label>Postleitzahl: <input type="text" name="plz" required></label><br>
+        <label>Ort: <input type="text" name="ort" required></label><br>
+        <button type="submit">Speichern</button>
+    </form>
+</body>
+</html>
