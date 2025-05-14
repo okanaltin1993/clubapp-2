@@ -78,7 +78,7 @@ def member_search():
 
     conn = sqlite3.connect("club.db")
     cursor = conn.cursor()
-    cursor.execute("SELECT mitgliedsnummer, vorname, nachname, plz, ort FROM mitglieder")
+    cursor.execute("SELECT mitgliedsnummer, vorname, nachname, mitgliedsstatus, plz, ort FROM mitglieder")
     mitglieder = cursor.fetchall()
     conn.close()
 
