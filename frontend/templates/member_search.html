@@ -12,7 +12,7 @@
             padding: 0;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 60px auto;
             background: white;
             padding: 20px;
@@ -45,10 +45,15 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
         th, td {
             padding: 12px;
             border: 1px solid #ccc;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            white-space: normal;
         }
         th {
             background-color: #ddd;
@@ -78,6 +83,7 @@
                     <th>Mitgliedsnummer</th>
                     <th>Vorname</th>
                     <th>Nachname</th>
+                    <th>Straße</th>
                     <th>Mitgliedstyp</th>
                     <th>PLZ</th>
                     <th>Ort</th>
@@ -85,32 +91,16 @@
                 </tr>
             </thead>
             <tbody>
-                {% for mitglied in mitglieder %}
                 <tr>
-                    <td>{{ mitglied[0] }}</td>
-                    <td>{{ mitglied[1] }}</td>
-                    <td>{{ mitglied[2] }}</td>
-                    <td style="text-align: center;">
-                        {% if mitglied[3] == 'Bronze' %}
-                            🥉 Bronze
-                        {% elif mitglied[3] == 'Silber' %}
-                            🥈 Silber
-                        {% elif mitglied[3] == 'Gold' %}
-                            🥇 Gold
-                        {% else %}
-                            {{ mitglied[3] }}
-                        {% endif %}
-                    </td>
-                    <td>{{ mitglied[4] }}</td>
-                    <td>{{ mitglied[5] }}</td>
-                    <td style="text-align: center;">
-                        <form method="POST" action="/delete-member" onsubmit="return confirm('Wirklich löschen?');">
-                            <input type="hidden" name="mitgliedsnummer" value="{{ mitglied[0] }}">
-                            <button type="submit" class="delete-icon">Löschen</button>
-                        </form>
-                    </td>
+                    <td>CB-BHV-01</td>
+                    <td>Max</td>
+                    <td>Muster</td>
+                    <td>Musterstraße 123, Gebäude C, 3. Etage rechts, Hinterhof</td>
+                    <td>🥇 Gold</td>
+                    <td>12345</td>
+                    <td>Bremen</td>
+                    <td><button class="delete-icon">Löschen</button></td>
                 </tr>
-                {% endfor %}
             </tbody>
         </table>
     </div>
