@@ -62,7 +62,7 @@
     <h1>Mitglied hinzufügen</h1>
     <form method="POST" action="/add-member" enctype="multipart/form-data">
         <label>Mitgliedsnummer:</label>
-        <input type="text" name="mitgliedsnummer" value="{{ mitgliedsnummer }}" readonly>
+        <input type="text" name="mitgliedsnummer" value="CB-BHV-04" readonly>
 
         <label>Vorname:</label>
         <input type="text" name="vorname" required>
@@ -82,15 +82,19 @@
         <label>Staatsbürgerschaft:</label>
         <input type="text" name="staatsbuergerschaft" required>
 
-        <label>Mitgliedstyp / Status:</label>
+        <label>Mitgliedsstatus:</label>
         <select name="mitgliedsstatus">
             <option value="Bronze">Bronze</option>
             <option value="Silber">Silber</option>
             <option value="Gold">Gold</option>
+            <option value="Platin">Platin</option>
         </select>
 
         <label>Foto hochladen:</label>
         <input type="file" name="bild">
+
+        <label>Anmeldeformular hochladen:</label>
+        <input type="file" name="formular" accept=".pdf,.jpg,.jpeg,.png">
 
         <button type="submit">Speichern</button>
     </form>
