@@ -71,6 +71,19 @@ def add_member():
 
     return redirect("/admin-panel")
 
+@app.route("/member-search")
+def member_search():
+    if not session.get("admin"):
+        return redirect("/admin-login")
+
+    conn = sqlite3.connect("club.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT mitgliedsnummer, vorname, nachname, strasse, mitgliedsstatus, plz, ort FROM mitglieder")
+    mitglieder = cursor.fetchall()
+    conn.close()
+
+    return render_template("member_search.html", mitglieder=mitglieder)
+
 @app.route("/delete-member", methods=["POST"])
 def delete_member():
     if not session.get("admin"):
@@ -85,7 +98,6 @@ def delete_member():
     conn.close()
 
     return redirect("/member-search")
-
 
 @app.route("/mitglied/<mitgliedsnummer>")
 def mitglied_detail(mitgliedsnummer):
