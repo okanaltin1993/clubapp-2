@@ -91,16 +91,33 @@
                 </tr>
             </thead>
             <tbody>
+                {% for mitglied in mitglieder %}
                 <tr>
-                    <td>CB-BHV-01</td>
-                    <td>Max</td>
-                    <td>Muster</td>
-                    <td>Musterstraße 123, Gebäude C, 3. Etage rechts, Hinterhof</td>
-                    <td>🥇 Gold</td>
-                    <td>12345</td>
-                    <td>Bremen</td>
-                    <td><button class="delete-icon">Löschen</button></td>
+                    <td>{{ mitglied[0] }}</td>
+                    <td>{{ mitglied[1] }}</td>
+                    <td>{{ mitglied[2] }}</td>
+                    <td>{{ mitglied[3] }}</td>
+                    <td>
+                        {% if mitglied[4] == 'Bronze' %}
+                            🥉 Bronze
+                        {% elif mitglied[4] == 'Silber' %}
+                            🥈 Silber
+                        {% elif mitglied[4] == 'Gold' %}
+                            🥇 Gold
+                        {% else %}
+                            {{ mitglied[4] }}
+                        {% endif %}
+                    </td>
+                    <td>{{ mitglied[5] }}</td>
+                    <td>{{ mitglied[6] }}</td>
+                    <td>
+                        <form method="POST" action="/delete-member" onsubmit="return confirm('Wirklich löschen?');">
+                            <input type="hidden" name="mitgliedsnummer" value="{{ mitglied[0] }}">
+                            <button type="submit" class="delete-icon">Löschen</button>
+                        </form>
+                    </td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
