@@ -32,11 +32,12 @@ def add_member_form():
 
     conn = sqlite3.connect("club.db")
     cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM mitglieder")
-    count = cursor.fetchone()[0] + 1
+    cursor.execute("SELECT MAX(id) FROM mitglieder")
+    result = cursor.fetchone()
+    next_id = (result[0] or 0) + 1
     conn.close()
 
-    mitgliedsnummer = f"CB-BHV-{count:02d}"
+    mitgliedsnummer = f"CB-BHV-{next_id:02d}"
     return render_template("admin_add_member.html", mitgliedsnummer=mitgliedsnummer)
 
 @app.route("/add-member", methods=["POST"])
@@ -55,9 +56,10 @@ def add_member():
 
     conn = sqlite3.connect("club.db")
     cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM mitglieder")
-    count = cursor.fetchone()[0] + 1
-    mitgliedsnummer = f"CB-BHV-{count:02d}"
+    cursor.execute("SELECT MAX(id) FROM mitglieder")
+    result = cursor.fetchone()
+    next_id = (result[0] or 0) + 1
+    mitgliedsnummer = f"CB-BHV-{next_id:02d}"
 
     cursor.execute("""
         INSERT INTO mitglieder (
