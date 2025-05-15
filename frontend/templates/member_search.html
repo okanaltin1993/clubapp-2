@@ -103,7 +103,14 @@
                     <td>{{ mitglied[1] }}</td>
                     <td>{{ mitglied[2] }}</td>
                     <td>{{ mitglied[3] }}</td>
-                    <td>{{ mitglied[4] }}</td>
+                    <td>
+                        {% if mitglied[4] == "Bronze" %} 🥉 Bronze
+                        {% elif mitglied[4] == "Silber" %} 🥈 Silber
+                        {% elif mitglied[4] == "Gold" %} 🥇 Gold
+                        {% elif mitglied[4] == "Platin" %} 💎 Platin
+                        {% else %} {{ mitglied[4] }}
+                        {% endif %}
+                    </td>
                     <td>{{ mitglied[5] }}</td>
                     <td>{{ mitglied[6] }}</td>
                     <td>
