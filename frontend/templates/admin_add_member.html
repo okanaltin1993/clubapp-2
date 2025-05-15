@@ -62,7 +62,7 @@
     <h1>Mitglied hinzufügen</h1>
     <form method="POST" action="/add-member" enctype="multipart/form-data">
         <label>Mitgliedsnummer:</label>
-        <input type="text" name="mitgliedsnummer" value="CB-BHV-04" readonly>
+        <input type="text" name="mitgliedsnummer" value="{{ mitgliedsnummer }}" readonly>
 
         <label>Vorname:</label>
         <input type="text" name="vorname" required>
