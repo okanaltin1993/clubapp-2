@@ -12,7 +12,7 @@
             padding: 0;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 60px auto;
             background: white;
             padding: 20px;
@@ -45,30 +45,35 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed;
         }
         th, td {
             padding: 12px;
             border: 1px solid #ccc;
             text-align: center;
-            vertical-align: middle;
-            word-wrap: break-word;
-            white-space: normal;
+            word-break: break-word;
         }
         th {
             background-color: #ddd;
         }
-        .delete-icon {
+        .delete-form {
+            margin: 0;
+        }
+        .delete-button {
             background-color: black;
             color: white;
             border: none;
-            padding: 8px 12px;
             border-radius: 6px;
-            font-size: 14px;
+            padding: 8px 12px;
             cursor: pointer;
+            font-size: 14px;
         }
-        .delete-icon:hover {
-            background-color: #333;
+        a.member-link {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a.member-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -76,7 +81,8 @@
     <button class="logout" onclick="location.href='/logout'">Logout</button>
     <div class="container">
         <h1>Mitglieder suchen</h1>
-        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Suche nach Name, Mitgliedsnummer, Ort...">
+        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Suche nach Name, Nummer, Ort...">
+
         <table id="memberTable">
             <thead>
                 <tr>
@@ -93,27 +99,17 @@
             <tbody>
                 {% for mitglied in mitglieder %}
                 <tr>
-                    <td>{{ mitglied[0] }}</td>
+                    <td><a class="member-link" href="/mitglied/{{ mitglied[0] }}">{{ mitglied[0] }}</a></td>
                     <td>{{ mitglied[1] }}</td>
                     <td>{{ mitglied[2] }}</td>
                     <td>{{ mitglied[3] }}</td>
-                    <td>
-                        {% if mitglied[4] == 'Bronze' %}
-                            🥉 Bronze
-                        {% elif mitglied[4] == 'Silber' %}
-                            🥈 Silber
-                        {% elif mitglied[4] == 'Gold' %}
-                            🥇 Gold
-                        {% else %}
-                            {{ mitglied[4] }}
-                        {% endif %}
-                    </td>
+                    <td>{{ mitglied[4] }}</td>
                     <td>{{ mitglied[5] }}</td>
                     <td>{{ mitglied[6] }}</td>
                     <td>
-                        <form method="POST" action="/delete-member" onsubmit="return confirm('Wirklich löschen?');">
+                        <form class="delete-form" method="POST" action="/delete-member">
                             <input type="hidden" name="mitgliedsnummer" value="{{ mitglied[0] }}">
-                            <button type="submit" class="delete-icon">Löschen</button>
+                            <button class="delete-button" type="submit">🗑️</button>
                         </form>
                     </td>
                 </tr>
@@ -121,10 +117,12 @@
             </tbody>
         </table>
     </div>
+
     <script>
         function searchTable() {
             let input = document.getElementById("searchInput").value.toLowerCase();
             let rows = document.getElementById("memberTable").getElementsByTagName("tr");
+
             for (let i = 1; i < rows.length; i++) {
                 let cells = rows[i].getElementsByTagName("td");
                 let match = false;
