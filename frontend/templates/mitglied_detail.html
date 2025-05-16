@@ -16,7 +16,7 @@
             max-width: 600px;
             margin: 40px auto;
             padding: 30px;
-            border: 4px solid gold;
+            border: 4px solid #27AE60;
             border-radius: 20px;
             background-color: white;
         }
@@ -25,12 +25,12 @@
             height: 200px;
             border-radius: 10px;
             object-fit: cover;
-            border: 3px solid gold;
+            border: 3px solid #27AE60;
             margin-bottom: 20px;
         }
         h2 {
             font-size: 2em;
-            color: #8B7500;
+            color: #2d572c;
             margin-bottom: 25px;
         }
         .field {
@@ -63,15 +63,15 @@
     <div class="container">
         <img src="{{ foto_url }}" alt="Mitgliedsfoto">
         <h2>{{ vorname }} {{ nachname }}</h2>
-        <div class="field"><span>Mitgliedsnr:</span> {{ club_id }}</div>
+        <div class="field"><span>Mitgliedsnr:</span> {{ mitgliedsnummer }}</div>
         <div class="field"><span>Mitgliedsstatus:</span> {{ mitgliedstyp }} {{ symbol }}</div>
         <div class="field"><span>Adresse:</span> {{ strasse }}, {{ plz }} {{ ort }}</div>
         <div class="field"><span>Staatsbürger:</span> {{ staatsbuergerschaft }}</div>
         <div class="field">
-            <a href="{{ formular_url }}" target="_blank" class="button">Anmeldeformular anzeigen</a>
+            <a href="/uploads/{{ mitgliedsnummer }}.pdf" target="_blank" class="button">Anmeldeformular anzeigen</a>
         </div>
         <div class="field">
-            <a href="/ausweis/{{ club_id }}" class="button">Web-Ausweis anzeigen</a>
+            <a href="/ausweis/{{ mitgliedsnummer }}" class="button">Web-Ausweis anzeigen</a>
         </div>
     </div>
 </body>
