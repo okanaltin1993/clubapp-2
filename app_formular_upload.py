@@ -56,6 +56,7 @@ def add_member():
     staatsbuergerschaft = request.form["staatsbuergerschaft"]
     mitgliedsstatus = request.form["mitgliedsstatus"]
     bild = request.files["bild"].read() if "bild" in request.files and request.files["bild"] else None
+    formular = request.files.get("formular")
 
     conn = sqlite3.connect("club.db")
     cursor = conn.cursor()
@@ -63,6 +64,13 @@ def add_member():
     result = cursor.fetchone()
     next_id = (result[0] or 0) + 1
     mitgliedsnummer = f"CB-BHV-{next_id:02d}"
+
+    # Speichere das Formular als Datei im uploads-Ordner
+    if formular and formular.filename:
+        ext = os.path.splitext(formular.filename)[1].lower()
+        if ext in [".pdf", ".jpg", ".jpeg"]:
+            filename = f"{mitgliedsnummer}{ext}"
+            formular.save(os.path.join(UPLOAD_FOLDER, filename))
 
     cursor.execute("""
         INSERT INTO mitglieder (
@@ -137,7 +145,13 @@ def mitglied_detail(mitgliedsnummer):
     if bild:
         foto_url = "data:image/png;base64," + base64.b64encode(bild).decode("utf-8")
 
-    formular_url = f"/uploads/{mitgliedsnummer}.pdf"
+    # Suche nach existierender Datei .pdf oder .jpg
+    formular_url = None
+    for ext in [".pdf", ".jpg", ".jpeg"]:
+        test_path = os.path.join(UPLOAD_FOLDER, f"{mitgliedsnummer}{ext}")
+        if os.path.exists(test_path):
+            formular_url = f"/uploads/{mitgliedsnummer}{ext}"
+            break
 
     return render_template("mitglied_detail.html",
         mitgliedsnummer=mitgliedsnummer,
