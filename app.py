@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
 import os
+import base64
 
 app = Flask(__name__, template_folder="frontend/templates", static_folder="frontend/static")
 app.secret_key = "super_secret_key"
@@ -63,10 +64,12 @@ def add_member():
 
     cursor.execute("""
         INSERT INTO mitglieder (
-            mitgliedsnummer, vorname, nachname, strasse, plz, ort, staatsbuergerschaft, mitgliedsstatus, bild
+            mitgliedsnummer, vorname, nachname, strasse, plz, ort,
+            staatsbuergerschaft, mitgliedsstatus, bild
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
-        mitgliedsnummer, vorname, nachname, strasse, plz, ort, staatsbuergerschaft, mitgliedsstatus, bild
+        mitgliedsnummer, vorname, nachname, strasse, plz, ort,
+        staatsbuergerschaft, mitgliedsstatus, bild
     ))
     conn.commit()
     conn.close()
@@ -105,7 +108,48 @@ def delete_member():
 def mitglied_detail(mitgliedsnummer):
     if not session.get("admin"):
         return redirect("/admin-login")
-    return render_template("mitglied_detail.html", mitgliedsnummer=mitgliedsnummer)
+
+    conn = sqlite3.connect("club.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT vorname, nachname, strasse, plz, ort,
+               staatsbuergerschaft, mitgliedsstatus, bild
+        FROM mitglieder WHERE mitgliedsnummer = ?
+    """, (mitgliedsnummer,))
+    result = cursor.fetchone()
+    conn.close()
+
+    if not result:
+        return "Mitglied nicht gefunden", 404
+
+    vorname, nachname, strasse, plz, ort, staatsbuergerschaft, mitgliedsstatus, bild = result
+    symbol_map = {
+        "Bronze": "🥉",
+        "Silber": "🥈",
+        "Gold": "🥇",
+        "Platin": "💎"
+    }
+    symbol = symbol_map.get(mitgliedsstatus, "")
+
+    foto_url = None
+    if bild:
+        foto_url = "data:image/png;base64," + base64.b64encode(bild).decode("utf-8")
+
+    formular_url = f"/uploads/{mitgliedsnummer}.pdf"
+
+    return render_template("mitglied_detail.html",
+        mitgliedsnummer=mitgliedsnummer,
+        vorname=vorname,
+        nachname=nachname,
+        strasse=strasse,
+        plz=plz,
+        ort=ort,
+        staatsbuergerschaft=staatsbuergerschaft,
+        mitgliedstyp=mitgliedsstatus,
+        symbol=symbol,
+        foto_url=foto_url or "/static/default-user.png",
+        formular_url=formular_url
+    )
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
