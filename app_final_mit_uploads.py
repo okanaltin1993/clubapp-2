@@ -1,11 +1,13 @@
 
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, send_from_directory
 import sqlite3
 import os
 import base64
 
 app = Flask(__name__, template_folder="frontend/templates", static_folder="frontend/static")
 app.secret_key = "super_secret_key"
+
+UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
 
 @app.route("/logout")
 def logout():
@@ -150,6 +152,10 @@ def mitglied_detail(mitgliedsnummer):
         foto_url=foto_url or "/static/default-user.png",
         formular_url=formular_url
     )
+
+@app.route("/uploads/<filename>")
+def uploaded_file(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
