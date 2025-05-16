@@ -6,48 +6,53 @@
     <title>Mitgliedsdetails – Vereasy</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #F4F6F6;
+            font-family: 'Arial', sans-serif;
+            background-color: white;
             margin: 0;
             padding: 0;
             text-align: center;
         }
         .container {
-            background-color: white;
-            max-width: 700px;
+            max-width: 600px;
             margin: 40px auto;
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+            border: 4px solid gold;
+            border-radius: 20px;
+            background-color: white;
         }
         img {
-            width: 150px;
-            height: 150px;
-            border-radius: 8px;
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
             object-fit: cover;
+            border: 3px solid gold;
             margin-bottom: 20px;
         }
         h2 {
-            color: #27AE60;
-            margin-bottom: 10px;
+            font-size: 2em;
+            color: #8B7500;
+            margin-bottom: 25px;
         }
         .field {
-            font-size: 1.1em;
-            margin: 8px 0;
+            font-size: 1.2em;
+            margin: 12px 0;
+            color: #333;
         }
         .field span {
             font-weight: bold;
         }
         .button {
-            margin-top: 25px;
+            display: inline-block;
+            margin-top: 18px;
             padding: 12px 24px;
             font-size: 1em;
             background-color: #27AE60;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             text-decoration: none;
+            margin-right: 10px;
         }
         .button:hover {
             background-color: #1e8f50;
@@ -58,15 +63,16 @@
     <div class="container">
         <img src="{{ foto_url }}" alt="Mitgliedsfoto">
         <h2>{{ vorname }} {{ nachname }}</h2>
-        <div class="field"><span>Mitgliedsnummer:</span> {{ club_id }}</div>
-        <div class="field"><span>Mitgliedstyp:</span> {{ mitgliedstyp }} {{ symbol }}</div>
+        <div class="field"><span>Mitgliedsnr:</span> {{ club_id }}</div>
+        <div class="field"><span>Mitgliedsstatus:</span> {{ mitgliedstyp }} {{ symbol }}</div>
         <div class="field"><span>Adresse:</span> {{ strasse }}, {{ plz }} {{ ort }}</div>
-        <div class="field"><span>Staatsbürgerschaft:</span> {{ staatsbuergerschaft }}</div>
+        <div class="field"><span>Staatsbürger:</span> {{ staatsbuergerschaft }}</div>
         <div class="field">
-            <span>Anmeldeformular:</span>
-            <a href="{{ formular_url }}" target="_blank">Anzeigen</a>
+            <a href="{{ formular_url }}" target="_blank" class="button">Anmeldeformular anzeigen</a>
         </div>
-        <a href="/ausweis/{{ club_id }}" class="button">Web-Ausweis anzeigen</a>
+        <div class="field">
+            <a href="/ausweis/{{ club_id }}" class="button">Web-Ausweis anzeigen</a>
+        </div>
     </div>
 </body>
 </html>
