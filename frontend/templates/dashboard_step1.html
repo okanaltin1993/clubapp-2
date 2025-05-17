@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Logout oben rechts -->
+    <div class="flex justify-end p-4">
+        <a href="/logout" class="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 shadow">Logout</a>
+    </div>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-1/4 p-4">
+            <div class="bg-white rounded-xl shadow p-4">
+                <h2 class="text-lg font-bold mb-4">Menü</h2>
+                <button onclick="showSection('addMemberSection')" class="w-full p-2 rounded-xl shadow mt-2 bg-green-600 hover:bg-green-700 text-white">
+                    Mitglied hinzufügen
+                </button>
+                <!-- Weitere Buttons folgen -->
+            </div>
+        </div>
+
+        <!-- Hauptbereich -->
+        <div class="w-3/4 p-4">
+            <div id="addMemberSection" style="display:none;" class="w-full p-4 bg-white rounded-xl shadow mt-4">
+                <h2 class="text-xl font-bold mb-4">Neues Mitglied hinzufügen</h2>
+                <!-- Formular kommt im nächsten Schritt hier rein -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JS zum Umschalten -->
+    <script>
+        function showSection(sectionId) {
+            const allSections = ['addMemberSection'];
+            allSections.forEach(id => {
+                document.getElementById(id).style.display = (id === sectionId) ? 'block' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
