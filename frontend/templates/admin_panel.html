@@ -27,7 +27,58 @@
         <div class="w-3/4 p-4">
             <div id="addMemberSection" style="display:none;" class="w-full p-4 bg-white rounded-xl shadow mt-4">
                 <h2 class="text-xl font-bold mb-4">Neues Mitglied hinzufügen</h2>
-                <!-- Formular kommt im nächsten Schritt hier rein -->
+
+                <form method="POST" action="/add-member" enctype="multipart/form-data" class="space-y-4">
+                    <div>
+                        <label class="block font-semibold">Vorname:</label>
+                        <input type="text" name="vorname" required class="w-full border rounded p-2">
+                    </div>
+                    <div>
+                        <label class="block font-semibold">Nachname:</label>
+                        <input type="text" name="nachname" required class="w-full border rounded p-2">
+                    </div>
+                    <div>
+                        <label class="block font-semibold">Geburtsdatum:</label>
+                        <input type="date" name="geburtsdatum" required class="w-full border rounded p-2">
+                    </div>
+                    <div>
+                        <label class="block font-semibold">Straße:</label>
+                        <input type="text" name="straße" required class="w-full border rounded p-2">
+                    </div>
+                    <div>
+                        <label class="block font-semibold">PLZ:</label>
+                        <input type="text" name="plz" required class="w-full border rounded p-2">
+                    </div>
+                    <div>
+                        <label class="block font-semibold">Ort:</label>
+                        <input type="text" name="ort" required class="w-full border rounded p-2">
+                    </div>
+                    <div>
+                        <label class="block font-semibold">Staatsbürgerschaft:</label>
+                        <input type="text" name="staatsbuergerschaft" required class="w-full border rounded p-2">
+                    </div>
+                    <div>
+                        <label class="block font-semibold">Mitgliedstyp:</label>
+                        <select name="mitgliedstyp" class="w-full border rounded p-2" required>
+                            <option value="">Bitte wählen</option>
+                            <option value="Bronze">🥉 Bronze</option>
+                            <option value="Silber">🥈 Silber</option>
+                            <option value="Gold">🥇 Gold</option>
+                            <option value="Platin">💎 Platin</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold">Profilbild (JPG/PNG):</label>
+                        <input type="file" name="profilbild" accept="image/*" class="w-full border rounded p-2">
+                    </div>
+                    <div>
+                        <label class="block font-semibold">Anmeldeformular (PDF/JPG):</label>
+                        <input type="file" name="dokument" accept=".pdf,image/*" class="w-full border rounded p-2">
+                    </div>
+                    <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded-xl hover:bg-green-800 shadow">
+                        Mitglied speichern
+                    </button>
+                </form>
             </div>
         </div>
     </div>
