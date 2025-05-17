@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, session, send_from_
 import sqlite3
 import os
 import base64
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__, template_folder="frontend/templates", static_folder="frontend/static")
 app.secret_key = "super_secret_key"
@@ -28,21 +29,6 @@ def admin_panel():
         return redirect("/admin-login")
     return render_template("admin_panel.html")
 
-@app.route("/admin-add-member")
-def add_member_form():
-    if not session.get("admin"):
-        return redirect("/admin-login")
-
-    conn = sqlite3.connect("club.db")
-    cursor = conn.cursor()
-    cursor.execute("SELECT MAX(id) FROM mitglieder")
-    result = cursor.fetchone()
-    next_id = (result[0] or 0) + 1
-    conn.close()
-
-    mitgliedsnummer = f"CB-BHV-{next_id:02d}"
-    return render_template("admin_add_member.html", mitgliedsnummer=mitgliedsnummer)
-
 @app.route("/add-member", methods=["POST"])
 def add_member():
     if not session.get("admin"):
@@ -50,13 +36,15 @@ def add_member():
 
     vorname = request.form["vorname"]
     nachname = request.form["nachname"]
-    strasse = request.form["strasse"]
+    geburtsdatum = request.form["geburtsdatum"]
+    straße = request.form["straße"]
     plz = request.form["plz"]
     ort = request.form["ort"]
     staatsbuergerschaft = request.form["staatsbuergerschaft"]
-    mitgliedsstatus = request.form["mitgliedsstatus"]
-    bild = request.files["bild"].read() if "bild" in request.files and request.files["bild"] else None
-    formular = request.files.get("formular")
+    mitgliedstyp = request.form["mitgliedstyp"]
+
+    profilbild = request.files["profilbild"]
+    dokument = request.files["dokument"]
 
     conn = sqlite3.connect("club.db")
     cursor = conn.cursor()
@@ -65,21 +53,31 @@ def add_member():
     next_id = (result[0] or 0) + 1
     mitgliedsnummer = f"CB-BHV-{next_id:02d}"
 
-    # Speichere das Formular als Datei im uploads-Ordner
-    if formular and formular.filename:
-        ext = os.path.splitext(formular.filename)[1].lower()
+    # Profilbild speichern
+    if profilbild and profilbild.filename:
+        pb_name = secure_filename(mitgliedsnummer + "_profilbild" + os.path.splitext(profilbild.filename)[1])
+        profilbild_path = os.path.join(UPLOAD_FOLDER, pb_name)
+        profilbild.save(profilbild_path)
+        with open(profilbild_path, "rb") as f:
+            bild_bytes = f.read()
+    else:
+        bild_bytes = None
+
+    # Dokument speichern
+    if dokument and dokument.filename:
+        ext = os.path.splitext(dokument.filename)[1].lower()
         if ext in [".pdf", ".jpg", ".jpeg"]:
             filename = f"{mitgliedsnummer}{ext}"
-            formular.save(os.path.join(UPLOAD_FOLDER, filename))
+            dokument.save(os.path.join(UPLOAD_FOLDER, filename))
 
     cursor.execute("""
         INSERT INTO mitglieder (
-            mitgliedsnummer, vorname, nachname, strasse, plz, ort,
+            mitgliedsnummer, vorname, nachname, geburtsdatum, straße, plz, ort,
             staatsbuergerschaft, mitgliedsstatus, bild
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
-        mitgliedsnummer, vorname, nachname, strasse, plz, ort,
-        staatsbuergerschaft, mitgliedsstatus, bild
+        mitgliedsnummer, vorname, nachname, geburtsdatum, straße, plz, ort,
+        staatsbuergerschaft, mitgliedstyp, bild_bytes
     ))
     conn.commit()
     conn.close()
@@ -93,7 +91,7 @@ def member_search():
 
     conn = sqlite3.connect("club.db")
     cursor = conn.cursor()
-    cursor.execute("SELECT mitgliedsnummer, vorname, nachname, strasse, mitgliedsstatus, plz, ort FROM mitglieder")
+    cursor.execute("SELECT mitgliedsnummer, vorname, nachname, straße, mitgliedsstatus, plz, ort FROM mitglieder")
     mitglieder = cursor.fetchall()
     conn.close()
 
@@ -122,7 +120,7 @@ def mitglied_detail(mitgliedsnummer):
     conn = sqlite3.connect("club.db")
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT vorname, nachname, strasse, plz, ort,
+        SELECT vorname, nachname, straße, plz, ort,
                staatsbuergerschaft, mitgliedsstatus, bild
         FROM mitglieder WHERE mitgliedsnummer = ?
     """, (mitgliedsnummer,))
@@ -132,7 +130,7 @@ def mitglied_detail(mitgliedsnummer):
     if not result:
         return "Mitglied nicht gefunden", 404
 
-    vorname, nachname, strasse, plz, ort, staatsbuergerschaft, mitgliedsstatus, bild = result
+    vorname, nachname, straße, plz, ort, staatsbuergerschaft, mitgliedsstatus, bild = result
     symbol_map = {
         "Bronze": "🥉",
         "Silber": "🥈",
@@ -145,7 +143,6 @@ def mitglied_detail(mitgliedsnummer):
     if bild:
         foto_url = "data:image/png;base64," + base64.b64encode(bild).decode("utf-8")
 
-    # Suche nach existierender Datei .pdf oder .jpg
     formular_url = None
     for ext in [".pdf", ".jpg", ".jpeg"]:
         test_path = os.path.join(UPLOAD_FOLDER, f"{mitgliedsnummer}{ext}")
@@ -157,7 +154,7 @@ def mitglied_detail(mitgliedsnummer):
         mitgliedsnummer=mitgliedsnummer,
         vorname=vorname,
         nachname=nachname,
-        strasse=strasse,
+        straße=straße,
         plz=plz,
         ort=ort,
         staatsbuergerschaft=staatsbuergerschaft,
