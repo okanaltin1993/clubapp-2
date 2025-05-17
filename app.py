@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect, session, send_from_directory
 import sqlite3
 import os
@@ -84,6 +83,16 @@ def add_member():
 
     return redirect("/admin-panel")
 
+@app.route("/next-id")
+def get_next_id():
+    conn = sqlite3.connect("club.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT MAX(id) FROM mitglieder")
+    result = cursor.fetchone()
+    conn.close()
+    next_id = (result[0] or 0) + 1
+    return f"CB-BHV-{next_id:02d}"
+
 @app.route("/member-search")
 def member_search():
     if not session.get("admin"):
@@ -137,7 +146,7 @@ def mitglied_detail(mitgliedsnummer):
         "Gold": "🥇",
         "Platin": "💎"
     }
-    symbol = symbol_map.get(mitgliedsstatus, "")
+    symbol = symbol_map.get(mitgliedstyp, "")
 
     foto_url = None
     if bild:
@@ -158,7 +167,7 @@ def mitglied_detail(mitgliedsnummer):
         plz=plz,
         ort=ort,
         staatsbuergerschaft=staatsbuergerschaft,
-        mitgliedstyp=mitgliedsstatus,
+        mitgliedstyp=mitgliedstyp,
         symbol=symbol,
         foto_url=foto_url or "/static/default-user.png",
         formular_url=formular_url
