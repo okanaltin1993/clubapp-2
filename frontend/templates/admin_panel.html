@@ -19,7 +19,6 @@
                 <button onclick="showSection('addMemberSection')" class="w-full p-2 rounded-xl shadow mt-2 bg-green-600 hover:bg-green-700 text-white">
                     Mitglied hinzufügen
                 </button>
-                <!-- Weitere Buttons folgen -->
             </div>
         </div>
 
@@ -29,6 +28,10 @@
                 <h2 class="text-xl font-bold mb-4">Neues Mitglied hinzufügen</h2>
 
                 <form method="POST" action="/add-member" enctype="multipart/form-data" class="space-y-4">
+                    <div>
+                        <label class="block font-semibold">Mitgliedsnummer:</label>
+                        <input type="text" id="mitgliedsnummer" disabled class="w-full border rounded p-2 bg-gray-100 text-gray-600">
+                    </div>
                     <div>
                         <label class="block font-semibold">Vorname:</label>
                         <input type="text" name="vorname" required class="w-full border rounded p-2">
@@ -83,13 +86,21 @@
         </div>
     </div>
 
-    <!-- JS zum Umschalten -->
+    <!-- JS zum Umschalten & Mitgliedsnummer laden -->
     <script>
         function showSection(sectionId) {
             const allSections = ['addMemberSection'];
             allSections.forEach(id => {
                 document.getElementById(id).style.display = (id === sectionId) ? 'block' : 'none';
             });
+
+            if (sectionId === 'addMemberSection') {
+                fetch("/next-id")
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("mitgliedsnummer").value = data;
+                    });
+            }
         }
     </script>
 </body>
