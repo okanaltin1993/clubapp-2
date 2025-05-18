@@ -9,6 +9,7 @@ app = Flask(__name__, template_folder="frontend/templates", static_folder="front
 app.secret_key = "super_secret_key"
 
 UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route("/logout")
 def logout():
@@ -27,7 +28,15 @@ def admin_login():
 def admin_panel():
     if not session.get("admin"):
         return redirect("/admin-login")
-    return render_template("admin_panel.html")
+
+    conn = sqlite3.connect("club.db")
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM mitglieder")
+    mitglieder = cursor.fetchall()
+    conn.close()
+
+    return render_template("admin_panel.html", mitglieder=mitglieder)
 
 @app.route("/add-member", methods=["POST"])
 def add_member():
@@ -97,6 +106,5 @@ def uploaded_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
