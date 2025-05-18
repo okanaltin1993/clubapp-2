@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -118,6 +119,14 @@
                 setTimeout(() => {
                     box.style.display = "none";
                 }, 3000);
+                document.getElementById("memberForm").reset();
+                document.querySelector('input[name="profilbild"]').value = "";
+                document.querySelector('input[name="dokument"]').value = "";
+                fetch("/next-id")
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("mitgliedsnummer").value = data;
+                    });
                 window.history.replaceState({}, document.title, "/admin-panel");
             }
         }
