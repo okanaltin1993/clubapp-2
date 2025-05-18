@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, redirect, session, send_from_directory
 import sqlite3
 import os
@@ -81,7 +82,7 @@ def add_member():
     conn.commit()
     conn.close()
 
-    return redirect("/admin-panel")
+    return redirect(f"/admin-panel?success={mitgliedsnummer}")
 
 @app.route("/next-id")
 def get_next_id():
@@ -139,7 +140,7 @@ def mitglied_detail(mitgliedsnummer):
     if not result:
         return "Mitglied nicht gefunden", 404
 
-    vorname, nachname, straße, plz, ort, staatsbuergerschaft, mitgliedsstatus, bild = result
+    vorname, nachname, straße, plz, ort, staatsbuergerschaft, mitgliedstyp, bild = result
     symbol_map = {
         "Bronze": "🥉",
         "Silber": "🥈",
