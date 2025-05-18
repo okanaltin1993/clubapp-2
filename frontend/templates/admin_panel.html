@@ -25,6 +25,32 @@
 
         <!-- Content Bereich -->
         <div class="w-3/4 p-4">
+            <!-- Mitglied hinzufügen -->
+            <div id="addMemberSection" class="hidden">
+                <h2 class="text-xl font-bold mb-4">Mitglied hinzufügen</h2>
+                <form action="/add-member" method="post" enctype="multipart/form-data" class="space-y-4 bg-white p-4 rounded-xl shadow">
+                    <input type="text" name="vorname" placeholder="Vorname" class="w-full p-2 border rounded-xl" required>
+                    <input type="text" name="nachname" placeholder="Nachname" class="w-full p-2 border rounded-xl" required>
+                    <input type="date" name="geburtsdatum" class="w-full p-2 border rounded-xl" required>
+                    <input type="text" name="strasse" placeholder="Straße" class="w-full p-2 border rounded-xl" required>
+                    <input type="text" name="plz" placeholder="PLZ" class="w-full p-2 border rounded-xl" required>
+                    <input type="text" name="ort" placeholder="Ort" class="w-full p-2 border rounded-xl" required>
+                    <input type="text" name="staatsbuergerschaft" placeholder="Staatsbürgerschaft" class="w-full p-2 border rounded-xl" required>
+                    <select name="mitgliedstyp" class="w-full p-2 border rounded-xl" required>
+                        <option value="" disabled selected>Mitgliedstyp wählen</option>
+                        <option value="Bronze">🥉 Bronze</option>
+                        <option value="Silber">🥈 Silber</option>
+                        <option value="Gold">🥇 Gold</option>
+                        <option value="Platin">💎 Platin</option>
+                    </select>
+                    <label>Profilbild:</label>
+                    <input type="file" name="profilbild" accept="image/*" class="w-full p-2 border rounded-xl">
+                    <label>Anmeldeformular (PDF oder Bild):</label>
+                    <input type="file" name="dokument" accept=".pdf,.jpg,.jpeg" class="w-full p-2 border rounded-xl">
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 shadow">Hinzufügen</button>
+                </form>
+            </div>
+
             <!-- Mitgliederliste (PRO) -->
             <div id="memberListSection" class="hidden">
                 <h2 class="text-xl font-bold mb-4">Mitgliederliste</h2>
@@ -44,12 +70,33 @@
                         </tr>
                     </thead>
                     <tbody id="memberTableBody">
-                        <!-- Dynamisch per Flask oder JS -->
+                        {% for member in mitglieder %}
+                        <tr>
+                            <td>{{ member.mitgliedsnummer }}</td>
+                            <td>{{ member.vorname }} {{ member.nachname }}</td>
+                            <td>
+                                {% if member.mitgliedsstatus == 'Bronze' %} 🥉
+                                {% elif member.mitgliedsstatus == 'Silber' %} 🥈
+                                {% elif member.mitgliedsstatus == 'Gold' %} 🥇
+                                {% elif member.mitgliedsstatus == 'Platin' %} 💎
+                                {% endif %}
+                                {{ member.mitgliedsstatus }}
+                            </td>
+                            <td>{{ member.strasse }}, {{ member.plz }} {{ member.ort }}</td>
+                            <td>🟢 bezahlt</td>
+                            <td>
+                                <a href="/uploads/{{ member.mitgliedsnummer }}.pdf" target="_blank">📄</a>
+                            </td>
+                            <td>
+                                <form action="/delete-member/{{ member.id }}" method="post" onsubmit="return confirm('Wirklich löschen?')">
+                                    <button type="submit">🗑️</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
-
-            <!-- Weitere Sections hier wie addMemberSection etc. -->
         </div>
     </div>
 
