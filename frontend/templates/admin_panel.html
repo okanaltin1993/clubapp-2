@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Logout oben rechts -->
+    <div class="flex justify-end p-4">
+        <a href="/logout" class="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 shadow">Logout</a>
+    </div>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-1/4 p-4">
+            <div class="bg-white rounded-xl shadow p-4">
+                <h2 class="text-lg font-bold mb-4">Menü</h2>
+                <button onclick="showSection('addMemberSection')" class="w-full p-2 rounded-xl shadow mt-2 bg-green-600 hover:bg-green-700 text-white">Mitglied hinzufügen</button>
+                <button onclick="showSection('memberListSection')" class="w-full p-2 rounded-xl shadow mt-2 bg-blue-600 hover:bg-blue-700 text-white">Mitgliederliste</button>
+            </div>
+        </div>
+
+        <!-- Content Bereich -->
+        <div class="w-3/4 p-4">
+            <!-- Mitgliederliste (PRO) -->
+            <div id="memberListSection" class="hidden">
+                <h2 class="text-xl font-bold mb-4">Mitgliederliste</h2>
+                <input type="text" id="searchInput" placeholder="Suche nach Namen oder Nummer..." 
+                       class="w-full p-2 mb-4 border rounded-xl shadow" onkeyup="filterMembers()">
+
+                <table class="min-w-full bg-white rounded-xl shadow overflow-hidden text-center">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="px-4 py-2">Mitgliedsnummer</th>
+                            <th class="px-4 py-2">Name</th>
+                            <th class="px-4 py-2">Typ</th>
+                            <th class="px-4 py-2">Adresse</th>
+                            <th class="px-4 py-2">Beitragsstatus</th>
+                            <th class="px-4 py-2">Dokument</th>
+                            <th class="px-4 py-2">Aktion</th>
+                        </tr>
+                    </thead>
+                    <tbody id="memberTableBody">
+                        <!-- Dynamisch per Flask oder JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Weitere Sections hier wie addMemberSection etc. -->
+        </div>
+    </div>
+
+    <script>
+    function showSection(id) {
+        document.querySelectorAll('div[id$="Section"]').forEach(div => div.classList.add("hidden"));
+        document.getElementById(id).classList.remove("hidden");
+    }
+
+    function filterMembers() {
+        const input = document.getElementById("searchInput").value.toLowerCase();
+        const rows = document.querySelectorAll("#memberTableBody tr");
+        rows.forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
+        });
+    }
+    </script>
+
+</body>
+</html>
